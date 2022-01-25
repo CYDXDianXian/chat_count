@@ -103,16 +103,15 @@ async def 清空全部消息记录(bot: HoshinoBot, ev: CQEvent):
 
 
 # ====== 仅限超级管理员才能进行的操作 ======
-@sv.on_fullmatch('清空全部数据') # 注意！该操作将会清空全部群的群聊记录！！！
+@sv.on_fullmatch("清空全部数据")  # 注意！该操作将会清空全部群的群聊记录！！！
 async def 清空全部消息记录(bot: HoshinoBot, ev: CQEvent):
     if not priv.check_priv(ev, priv.SUPERUSER):
-        await bot.send(ev, '对不起，您的权限不足，仅bot主人才能进行该操作！')
+        await bot.send(ev, "对不起，您的权限不足，仅bot主人才能进行该操作!")
     else:
-        data = load_data() # 读取json文件，转化为python字典
-        data.clear() # 清空字典
-        save_data(data) # 保存data中的数据到json
+        save_data({})  # 保存data中的数据到json
 
-        await bot.send(ev, '消息记录已全部清空')
+        await bot.send(ev, "消息记录已全部清空")
+
 
 # ===== 以下全部是各种数据处理模块，若不熟悉请勿随意改动！！！=====
 data_path = Path(__file__).parent / "chat_count.json"
@@ -140,12 +139,13 @@ def load_data() -> Optional[Dict[str, Any]]:
     except:
         traceback.print_exc()  # 输出详细异常，同上
 
-data = load_data()  # 读取json文件，转化为python字典
 
 # 关键字消息记录模块
 async def chat_count(bot: HoshinoBot, ev: CQEvent, keyword: str, user_name: str = None) -> None:
     uid = str(ev.user_id)  # 获取用户QQ，一定要转换为字符串，否则写入键值对时会出现bug
     gid = str(ev.group_id)  # 获取群号
+
+    data = load_data()  # 读取json文件，转化为python字典
 
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
@@ -184,6 +184,8 @@ async def chat_count(bot: HoshinoBot, ev: CQEvent, keyword: str, user_name: str 
 async def Query_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
     gid = str(ev.group_id)  # 获取群号
 
+    data = load_data()  # 读取json文件，转化为python字典
+
     if keyword not in data:
         await bot.finish(ev, f'抱歉，关键字"{keyword}"尚未被记录')
     elif not data[keyword]:
@@ -205,6 +207,8 @@ async def Query_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
 async def clear_group_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
     gid = str(ev.group_id) # 获取群号
 
+    data = load_data()  # 读取json文件，转化为python字典
+
     if not priv.check_priv(ev, priv.ADMIN):
         await bot.send(ev, '抱歉，您的权限不足，只有群主和管理才能清空本群消息记录')
     else:
@@ -221,6 +225,8 @@ async def clear_group_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> Non
 
 # 清空关键字消息模块
 async def clear_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
+    data = load_data()  # 读取json文件，转化为python字典
+    
     if not priv.check_priv(ev, priv.SUPERUSER):
         await bot.send(ev, '抱歉，您的权限不足，只有bot主人才能进行该操作！')
     else:
