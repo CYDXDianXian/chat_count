@@ -133,7 +133,6 @@ def save_data(data: Dict[str, Any]) -> None:
 
 # 读取数据模块
 def load_data() -> Optional[Dict[str, Any]]:
-    # 检查json文件是否存在，不存在则将data_json的内容创建成json文件
     try:
         return json.loads(data_path.read_text(encoding="utf-8"))
     except FileNotFoundError:
