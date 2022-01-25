@@ -34,6 +34,31 @@ sv = Service(
     help_ = sv_help #帮助说明
     )
 
+data_path = Path(__file__).parent / "chat_count.json"
+
+# 保存数据模块
+def save_data(data: Dict[str, Any]) -> None:
+    # ->常常出现在python函数定义的函数名后面，为函数添加元数据,描述函数的返回类型，从而方便开发人员使用
+    try:  # 对可能发生异常的代码处进行 try 捕获
+        json_data = json.dumps(
+            data, indent=4, ensure_ascii=False
+        )  # 将python字典转化为json字符串
+        data_path.write_text(json_data, encoding="utf-8")
+    except:  # 发生异常时执行 except 代码块，finally 代码块是无论什么情况都会执行
+        traceback.print_exc()
+        # Python使用traceback.print_exc()来代替print(e) 来输出详细的异常信息，print(e) 该异常捕获只能捕获到错误原因，traceback.print_exc()该异常捕获方式不但可以捕获到异常原因，同样可以捕获异常发生的位置【具体python文件和行数】
+
+# 读取数据模块
+def load_data() -> Optional[Dict[str, Any]]:
+    try:
+        return json.loads(data_path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return {}
+    except:
+        traceback.print_exc()  # 输出详细异常，同上
+
+data = load_data()  # 读取json文件，转化为python字典
+
 # ====== 指定用户才能触发的关键字 ======
 @sv.on_keyword('可怜酱') # 设置触发关键字
 async def 关键字计数器(bot: HoshinoBot, ev: CQEvent):
@@ -103,49 +128,25 @@ async def 清空全部消息记录(bot: HoshinoBot, ev: CQEvent):
 
 
 # ====== 仅限超级管理员才能进行的操作 ======
-@sv.on_fullmatch("清空全部数据")  # 注意！该操作将会清空全部群的群聊记录！！！
+@sv.on_fullmatch('清空全部数据') # 注意！该操作将会清空全部群的群聊记录！！！
 async def 清空全部消息记录(bot: HoshinoBot, ev: CQEvent):
+    global data # 全局变量声明，解决无法彻底清空数据的问题
+    
     if not priv.check_priv(ev, priv.SUPERUSER):
-        await bot.send(ev, "对不起，您的权限不足，仅bot主人才能进行该操作!")
+        await bot.send(ev, '对不起，您的权限不足，仅bot主人才能进行该操作！')
     else:
-        save_data({})  # 保存data中的数据到json
+        data = {}
+        save_data(data) # 保存data中的数据到json
 
-        await bot.send(ev, "消息记录已全部清空")
+        await bot.send(ev, '消息记录已全部清空')
 
 
 # ===== 以下全部是各种数据处理模块，若不熟悉请勿随意改动！！！=====
-data_path = Path(__file__).parent / "chat_count.json"
-
-
-# 保存数据模块
-def save_data(data: Dict[str, Any]) -> None:
-    # ->常常出现在python函数定义的函数名后面，为函数添加元数据,描述函数的返回类型，从而方便开发人员使用
-    try:  # 对可能发生异常的代码处进行 try 捕获
-        json_data = json.dumps(
-            data, indent=4, ensure_ascii=False
-        )  # 将python字典转化为json字符串
-        data_path.write_text(json_data, encoding="utf-8")
-    except:  # 发生异常时执行 except 代码块，finally 代码块是无论什么情况都会执行
-        traceback.print_exc()
-        # Python使用traceback.print_exc()来代替print(e) 来输出详细的异常信息，print(e) 该异常捕获只能捕获到错误原因，traceback.print_exc()该异常捕获方式不但可以捕获到异常原因，同样可以捕获异常发生的位置【具体python文件和行数】
-
-
-# 读取数据模块
-def load_data() -> Optional[Dict[str, Any]]:
-    try:
-        return json.loads(data_path.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        return {}
-    except:
-        traceback.print_exc()  # 输出详细异常，同上
-
 
 # 关键字消息记录模块
 async def chat_count(bot: HoshinoBot, ev: CQEvent, keyword: str, user_name: str = None) -> None:
     uid = str(ev.user_id)  # 获取用户QQ，一定要转换为字符串，否则写入键值对时会出现bug
     gid = str(ev.group_id)  # 获取群号
-
-    data = load_data()  # 读取json文件，转化为python字典
 
     now_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
@@ -184,8 +185,6 @@ async def chat_count(bot: HoshinoBot, ev: CQEvent, keyword: str, user_name: str 
 async def Query_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
     gid = str(ev.group_id)  # 获取群号
 
-    data = load_data()  # 读取json文件，转化为python字典
-
     if keyword not in data:
         await bot.finish(ev, f'抱歉，关键字"{keyword}"尚未被记录')
     elif not data[keyword]:
@@ -207,8 +206,6 @@ async def Query_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
 async def clear_group_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
     gid = str(ev.group_id) # 获取群号
 
-    data = load_data()  # 读取json文件，转化为python字典
-
     if not priv.check_priv(ev, priv.ADMIN):
         await bot.send(ev, '抱歉，您的权限不足，只有群主和管理才能清空本群消息记录')
     else:
@@ -225,8 +222,6 @@ async def clear_group_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> Non
 
 # 清空关键字消息模块
 async def clear_keyword(bot: HoshinoBot, ev: CQEvent, keyword: str) -> None:
-    data = load_data()  # 读取json文件，转化为python字典
-    
     if not priv.check_priv(ev, priv.SUPERUSER):
         await bot.send(ev, '抱歉，您的权限不足，只有bot主人才能进行该操作！')
     else:
