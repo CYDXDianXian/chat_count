@@ -6,6 +6,12 @@
 
 感谢[@A-kirami (明见)](https://github.com/A-kirami)大佬帮助完善与优化代码
 
+使用效果预览：
+
+![](https://github.com/CYDXDianXian/chat_count/blob/main/img/IMG_0652.JPG)
+
+![](https://github.com/CYDXDianXian/chat_count/blob/main/img/IMG_0654.JPG)
+
 ## 安装方法
 
 1. 将chat_count文件夹放到`HoshinoBot/hoshino/modules`目录下
