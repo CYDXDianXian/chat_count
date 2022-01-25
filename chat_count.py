@@ -25,7 +25,7 @@ sv_help = '''
 '''.strip()
 
 sv = Service(
-    name = '群聊关键字计数',  #功能名
+    name = '群聊关键字记录',  #功能名
     use_priv = priv.NORMAL, #使用权限   
     manage_priv = priv.ADMIN, #管理权限
     visible = True, #可见性
