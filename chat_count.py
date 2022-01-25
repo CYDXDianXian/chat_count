@@ -140,7 +140,7 @@ def load_data() -> Optional[Dict[str, Any]]:
     except:
         traceback.print_exc()  # 输出详细异常，同上
 
-data = load_data()  # 加载时读取json文件，转化为python字典
+data = load_data()  # 读取json文件，转化为python字典
 
 # 关键字消息记录模块
 async def chat_count(bot: HoshinoBot, ev: CQEvent, keyword: str, user_name: str = None) -> None:
