@@ -1,6 +1,6 @@
 # chat_count
 
-一款适用于hoshino的群聊关键字记录插件
+一款适用于hoshino的群聊关键消息记录插件
 
 仓库地址：[CYDXDianXian/chat_count: 适用hoshino的群聊关键字记录插件 (github.com)](https://github.com/CYDXDianXian/chat_count)
 
