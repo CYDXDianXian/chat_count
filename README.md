@@ -2,7 +2,7 @@
 
 一款适用于hoshino的群聊关键消息记录插件
 
-仓库地址：[CYDXDianXian/chat_count: 适用hoshino的群聊关键字记录插件 (github.com)](https://github.com/CYDXDianXian/chat_count)
+仓库地址：[CYDXDianXian/chat_count: 适用hoshino的群聊关键消息记录插件 (github.com)](https://github.com/CYDXDianXian/chat_count)
 
 该插件可记录群聊中某关键字的触发次数、时间、与完整消息，并可对储存记录的消息方便的进行读取，以查看群友们都围绕该关键字说了什么
 
