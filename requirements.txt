@@ -1,4 +1,1 @@
-asyncio
-pathlib
-typing
-ujson
+ujson==5.1.0
