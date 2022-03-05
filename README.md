@@ -8,12 +8,6 @@
 
 感谢[@A-kirami (明见)](https://github.com/A-kirami)大佬帮助完善与优化代码
 
-使用效果预览：
-
-![](https://github.com/CYDXDianXian/chat_count/blob/main/img/IMG_0652.JPG)
-
-![](https://github.com/CYDXDianXian/chat_count/blob/main/img/IMG_0654.JPG)
-
 ## 安装方法
 
 1. 将chat_count文件夹放到`HoshinoBot/hoshino/modules`目录下
@@ -34,3 +28,8 @@
 - 文件中已经预置了三组消息示例，使用前请进行关键字更改
 - 每组消息记录模块包含4个函数，分别对应消息记录、查询、清空本群和清空全部群4个功能，复制模块时记得将其全部复制并逐个设定新的触发指令，文件中已用分割线标注
 - 注意定时清理消息数据，否则数据会越来越大
+
+## 效果预览
+![image](https://user-images.githubusercontent.com/71607036/156898481-3884aecf-5a50-4a39-ad50-c738d3f0ff62.png)
+
+![image](https://user-images.githubusercontent.com/71607036/156898490-9623bd47-c588-45bc-ae6c-e3d997840a64.png)
