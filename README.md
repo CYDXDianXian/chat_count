@@ -10,9 +10,20 @@
 
 ## 安装方法
 
-1. 将chat_count文件夹放到`HoshinoBot/hoshino/modules`目录下
-2. 安装依赖 `pip install -r requirements.txt`
+1. 在`HoshinoBot/hoshino/modules`目录下克隆本仓库
+
+   ```
+   git clone https://github.com/CYDXDianXian/chat_count.git
+   ```
+
+2. 安装依赖
+
+   ```
+   pip install -r requirements.txt -i https://pypi.douban.com/simple/
+   ```
+
 3. 在`HoshinoBot/hoshino/config/__bot__.py`中添加chat_count模块
+
 4. 重启Hoshino
 
 ## 指令列表
